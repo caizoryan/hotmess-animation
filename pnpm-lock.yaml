@@ -1,0 +1,13 @@
+lockfileVersion: 5.4
+
+specifiers:
+  '@types/p5': ^1.5.0
+
+devDependencies:
+  '@types/p5': 1.6.0
+
+packages:
+
+  /@types/p5/1.6.0:
+    resolution: {integrity: sha512-1DuGI41woYiMjEGh0hvt1NJPMvjiBHQO/4uKvPCy3IYvytCAq/c3S+0zlRrfhzwVNjydwr2hgkfdBTnptd6nSw==}
+    dev: true
