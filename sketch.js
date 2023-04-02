@@ -2,7 +2,7 @@ let font;
 let index;
 let operator = "add";
 let multiple = [];
-let anchorSize = 8;
+let anchorSize = 4;
 let key = { time: 0 };
 let tl;
 
@@ -12,14 +12,14 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   index = 0;
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 40; i++) {
     multiple.push(new CoolText("HOTMESS", 100, 400, 300, 0.01 + i * 0.001));
   }
   setInterval(() => next(), 200);
 }
 
 function draw() {
-  background(0, 40);
+  background(0, 80);
   multiple[index].show();
 }
 
@@ -38,6 +38,7 @@ class Character {
     this.x = x;
     this.y = y;
     this.counter = 0;
+
     for (const x of this.points) {
       random() < 0.1
         ? (x.p = {
@@ -49,14 +50,16 @@ class Character {
   }
   show() {
     // if (this.counter < this.points.length) this.counter++;
-    strokeWeight(1);
+    strokeWeight(10);
+    strokeCap(ROUND);
+    strokeJoin(ROUND);
     stroke(255, random(50, 90));
     noFill();
     beginShape();
     for (let i = 0; i < this.points.length; i++) {
       // if (i > this.counter) break;
       let x = this.points[i];
-      vertex(x.x + this.x, x.y + this.y);
+      vertex(x.x + this.x + random(5), x.y + this.y + random(5));
       if (x.p) rect(x.p.x, x.p.y, anchorSize);
     }
     endShape(CLOSE);
