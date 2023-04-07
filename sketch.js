@@ -1,26 +1,40 @@
 let font;
+let itsTime = false;
 let index;
 let operator = "add";
 let multiple = [];
-let anchorSize = 4;
-let key = { time: 0 };
+let anchorSize = 10;
+let word, word2;
+
 let tl;
+let img;
 
 function preload() {
   font = loadFont("./arizona.otf");
+  img = loadImage("./image.jpg");
 }
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(1000, 1000);
   index = 0;
   for (let i = 0; i < 40; i++) {
-    multiple.push(new CoolText("HOTMESS", 100, 400, 300, 0.01 + i * 0.001));
+    multiple.push(new CoolText("HOTMESS", 50, 400, 300, 0.01 + i * 0.001));
   }
-  setInterval(() => next(), 200);
+  word = new CoolText("HOT", 50, 400, 250, 0.2);
+  word2 = new CoolText("MESS", 350, 600, 250, 0.2);
+  setTimeout(() => {
+    itsTime = true;
+  }, 1000);
+  // setInterval(() => next(), 200);
 }
 
 function draw() {
-  background(0, 80);
-  multiple[index].show();
+  image(img, 0, 0, width, height);
+  tint(255, 10);
+  // multiple[index].show();
+  if (itsTime) {
+    word.show();
+    word2.show();
+  }
 }
 
 function next() {
@@ -40,7 +54,7 @@ class Character {
     this.counter = 0;
 
     for (const x of this.points) {
-      random() < 0.1
+      random() < 0.03
         ? (x.p = {
             x: x.x + this.x - anchorSize / 2,
             y: x.y + this.y - anchorSize / 2,
@@ -49,20 +63,27 @@ class Character {
     }
   }
   show() {
-    // if (this.counter < this.points.length) this.counter++;
-    strokeWeight(10);
+    if (this.counter < this.points.length) this.counter += random(0.1, 1.2);
+    strokeWeight(2);
     strokeCap(ROUND);
     strokeJoin(ROUND);
-    stroke(255, random(50, 90));
+    stroke(256, 86, 106);
     noFill();
+    push();
+    rotate(0.1);
     beginShape();
     for (let i = 0; i < this.points.length; i++) {
-      // if (i > this.counter) break;
+      if (i > this.counter) break;
       let x = this.points[i];
-      vertex(x.x + this.x + random(5), x.y + this.y + random(5));
-      if (x.p) rect(x.p.x, x.p.y, anchorSize);
+      vertex(x.x + this.x, x.y + this.y);
     }
     endShape(CLOSE);
+    for (let i = 0; i < this.points.length; i++) {
+      if (i > this.counter) break;
+      let x = this.points[i];
+      if (x.p) rect(x.p.x, x.p.y, anchorSize);
+    }
+    pop();
   }
   update(x, y) {
     this.x = x;
@@ -84,7 +105,7 @@ class CoolText {
           x + size * 0.7 * i,
           y,
           size,
-          sampleFactor
+          sampleFactor * (i + 1)
         )
       );
     }
