@@ -8,8 +8,39 @@
 
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
+  <style>
+    .container {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      background: rgb(254, 249, 236);
+    }
+    #p5 {
+      width: 1000px;
+      height: 1000px;
+      box-shadow: 10px 20px 20px 10px rgba(0, 0, 0, 0.03);
+      transition: all ease-in-out 800ms;
+    }
+    #p5:hover {
+      transform: scale(1.03);
+      box-shadow: 10px 20px 20px 10px rgba(0, 0, 0, 0.01);
+    }
+
+    @media only screen and (max-width: 1050px) {
+      #p5 {
+        width: 90vw;
+        height: 90vw;
+      }
+    }
+  </style>
 
   <body>
+    <div class="container">
+      <div id="p5"></div>
+    </div>
+
     <script src="libraries/p5.js"></script>
     <script src="libraries/p5.sound.min.js"></script>
     <script src="easings.js"></script>

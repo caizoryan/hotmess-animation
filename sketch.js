@@ -9,18 +9,25 @@ let word, word2;
 let tl;
 let img;
 
+let w;
+
 function preload() {
   font = loadFont("./arizona.otf");
   img = loadImage("./image.jpg");
 }
 function setup() {
-  createCanvas(1000, 1000);
+  console.log(windowWidth);
+  if (windowWidth < 1050) w = 0.9 * windowWidth;
+  else w = 1000;
+  createCanvas(w, w).parent("p5");
   index = 0;
   for (let i = 0; i < 40; i++) {
-    multiple.push(new CoolText("HOTMESS", 50, 400, 300, 0.01 + i * 0.001));
+    multiple.push(
+      new CoolText("HOTMESS", 0.05 * w, 0.4 * w, 0.3 * w, 0.01 + i * 0.001)
+    );
   }
-  word = new CoolText("HOT", 50, 400, 250, 0.2);
-  word2 = new CoolText("MESS", 350, 600, 250, 0.2);
+  word = new CoolText("HOT", 0.1 * w, 0.4 * w, 0.2 * w, 0.3);
+  word2 = new CoolText("MESS", 0.3 * w, 0.58 * w, 0.2 * w, 0.3);
   setTimeout(() => {
     itsTime = true;
   }, 1000);
@@ -29,7 +36,7 @@ function setup() {
 
 function draw() {
   image(img, 0, 0, width, height);
-  tint(255, 10);
+  tint(255, 30);
   // multiple[index].show();
   if (itsTime) {
     word.show();
@@ -51,8 +58,23 @@ class Character {
     });
     this.x = x;
     this.y = y;
-    this.counter = 0;
+    this.counter = { count: 0 };
+    this.tl = new Timeline();
+    this.tl.add(
+      new PropKeyframes(
+        this.counter,
+        "count",
+        [
+          [360, 4000],
+          [360, 1000],
+          [0, 4000],
+        ],
+        "InQuad"
+      )
+    );
 
+    this.tl.animate();
+    this.tl.loop();
     for (const x of this.points) {
       random() < 0.03
         ? (x.p = {
@@ -63,27 +85,24 @@ class Character {
     }
   }
   show() {
-    if (this.counter < this.points.length) this.counter += random(0.1, 1.2);
+    this.tl.update();
     strokeWeight(2);
     strokeCap(ROUND);
     strokeJoin(ROUND);
     stroke(256, 86, 106);
     noFill();
-    push();
-    rotate(0.1);
     beginShape();
     for (let i = 0; i < this.points.length; i++) {
-      if (i > this.counter) break;
+      if (i > this.counter.count) break;
       let x = this.points[i];
       vertex(x.x + this.x, x.y + this.y);
     }
     endShape(CLOSE);
     for (let i = 0; i < this.points.length; i++) {
-      if (i > this.counter) break;
+      if (i > this.counter.count) break;
       let x = this.points[i];
       if (x.p) rect(x.p.x, x.p.y, anchorSize);
     }
-    pop();
   }
   update(x, y) {
     this.x = x;
@@ -105,7 +124,7 @@ class CoolText {
           x + size * 0.7 * i,
           y,
           size,
-          sampleFactor * (i + 1)
+          sampleFactor
         )
       );
     }
