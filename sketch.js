@@ -29,7 +29,7 @@ function preload() {
 function setup() {
   console.log(windowWidth);
   if (windowWidth < 1050) w = 0.9 * windowWidth;
-  else w = 1000;
+  else w = windowHeight * 0.9;
   createCanvas(w, w).parent("p5");
   index = 0;
   for (let i = 0; i < 40; i++) {
